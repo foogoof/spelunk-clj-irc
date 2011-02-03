@@ -1,13 +1,13 @@
 # spelunk-clj-irc
 
-FIXME: write description
+http://clojure-log.n01se.net/ has been graciously capturing and hosting HTML copies of Clojure IRC logs. This code intends to screenscrape said logs, convert to simpler formats, and possibly even answer simple questions about the data.
 
 ## Usage
 
-FIXME: write
+(spelunk-clj-irc/url-to-comments "...")
 
 ## License
 
-Copyright (C) 2010 FIXME
+Copyright (C) 2010 Seth Schroeder
 
 Distributed under the Eclipse Public License, the same as Clojure.
