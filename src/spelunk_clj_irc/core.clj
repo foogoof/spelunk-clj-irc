@@ -127,6 +127,5 @@
 (defn dir-to-csv [dir]
   (let [dir_url (File. dir)]
     (doseq [x (filter #(re-matches #"^.+\.html$" %) (remove nil? (.list dir_url)))]
-      #_(println (URL. (str "file://" (File. dir x))))
       (url-to-csv-file (File. dir x)))))
 
