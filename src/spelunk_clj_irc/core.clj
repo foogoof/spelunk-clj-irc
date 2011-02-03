@@ -44,8 +44,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn preprocess-node [year month day item]
-  {:post [(:who %), (:when %), (:what %)]}
-
+  {:post [(:who %), (:when %), #_(:what %)]} ;; relaxing what constraint, empty messages filtered later
   (reduce (fn [memo node]
             ;; (log/debug "==== Begin node processing")
             ;; ;; hmm.. how to mix clojure.contrib.strint, clojure.pprint, and clojure.contrib.logging?
@@ -87,12 +86,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; will return nil for valid nodes which are just empty messages
 (defn node-to-comment [year month day node]
   (try
     (let [preprocessed-node (preprocess-node year month day node)
           {:keys [who when what]} preprocessed-node]
-      (Comment. who what when))
-    (catch Exception ex
+      (if (and who when what)
+        (Comment. who what when)
+        nil))
+    (catch Throwable ex
        (println "puked on this node")
        (pp/pprint node)
        (throw ex))))
@@ -101,8 +103,8 @@
 
 (defn html-to-comments [html-data]
   (let [[month day year] (util/grab-log-date html-data)]
-    (map #(node-to-comment year month day (:content %))
-         (html/select html-data [:#main :p]))))
+    (remove nil? (map #(node-to-comment year month day (:content %))
+                      (html/select html-data [:#main :p])))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -116,16 +118,15 @@
   (let [data (url-to-csv url)
         destination (File. (string/replace (str url) ".html" ".csv"))]
     (when-not (.exists destination)
-      (println url destination)
+      (println url "   =>   " destination)
       (with-open [os (io/output-stream destination)]
         (.write os (.getBytes (str (getHeader (Comment. nil nil nil)) "\n")))
         (doseq [row data]
           (.write os (.getBytes (str row "\n"))))))))
 
 (defn dir-to-csv [dir]
-  #_(println () dir)
   (let [dir_url (File. dir)]
-    (doseq [x (remove nil? (.list dir_url))]
-      (println (URL. (str "file://" (File. dir x))))
+    (doseq [x (filter #(re-matches #"^.+\.html$" %) (remove nil? (.list dir_url)))]
+      #_(println (URL. (str "file://" (File. dir x))))
       (url-to-csv-file (File. dir x)))))
 
