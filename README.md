@@ -1,6 +1,6 @@
 # spelunk-clj-irc
 
-[n01se.net](http://clojure-log.n01se.net/) has been graciously capturing and hosting HTML copies of [irc://irc.freenode.net/#clojure](Clojure IRC) logs. This code intends to screenscrape said logs, convert to simpler formats, and possibly even answer simple questions about the data.
+[n01se.net](http://clojure-log.n01se.net/) has been graciously capturing and hosting HTML copies of [Clojure IRC](irc://irc.freenode.net/#clojure) logs. This code intends to screenscrape said logs, convert to simpler formats, and possibly even answer simple questions about the data.
 
 ## Usage
 
