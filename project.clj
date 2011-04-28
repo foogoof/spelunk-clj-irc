@@ -4,5 +4,4 @@
                  [org.clojure/clojure-contrib "1.2.0"]
                  [enlive "1.0.0"]
                  [clj-time "0.3.0"]]
-  :dev-dependencies [[swank-clojure "1.2.1"]]
-  )
+  :dev-dependencies [[swank-clojure "1.4.0-SNAPSHOT"]])
