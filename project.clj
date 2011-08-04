@@ -4,6 +4,7 @@
                  [org.clojure/clojure-contrib "1.2.0"]
                  [enlive "1.0.0-SNAPSHOT"]
                  [clj-time "0.3.0-SNAPSHOT"]
-                 ]
+                 [incanter "1.2.3"]
+                 [org.xerial/sqlite-jdbc "3.7.2"]]
   :dev-dependencies [[swank-clojure "1.2.1"]]
   )
